@@ -543,7 +543,7 @@
     btn.disabled = true;
     btn.innerHTML = '⏳ &nbsp;Submitting...';
 
-    // Fire and forget — no-cors means we cannot read the response
+    // Fire and forget — no-cors means we can't read the response, so just trust it sent
     try {
       await fetch(APPS_SCRIPT_URL, {
         method:'POST', mode:'no-cors',
@@ -551,11 +551,13 @@
         body: JSON.stringify(d)
       });
     } catch(err) {
+      // Only real offline/DNS failures land here
       showErr('Network error. Check your connection.');
       btn.disabled = false;
-      btn.innerHTML = 'Submit Fuel Log';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
       return;
     }
+    // Fetch sent — save odometer and show success
     const miles = parseInt(d.odometer);
     if (d.truckNum && !isNaN(miles)) setLastOdo(d.truckNum, miles);
     document.getElementById('successMsg').style.display = 'flex';
