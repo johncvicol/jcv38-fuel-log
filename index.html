@@ -432,18 +432,17 @@
       n.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) +
       '  ' + n.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
   }
-  setTimestamp();
-  setInterval(setTimestamp, 60000); // updates every minute until submit
-
-  // Live timestamp
   function updateTS() {
     const n = new Date();
     const el = document.getElementById('tsbadge');
-    if(el) el.textContent =
-      n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) +
-      '  ·  ' + n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    if(el) el.textContent = n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) + '  ·  ' + n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   }
-  updateTS(); setInterval(updateTS, 30000);
+  window.addEventListener('load', function() {
+    setTimestamp();
+    setInterval(setTimestamp, 60000);
+    updateTS();
+    setInterval(updateTS, 30000);
+  });
 
   function updateBar(v) {
     document.getElementById('galBar').style.width = Math.min((parseFloat(v)||0)/200*100,100)+'%';
