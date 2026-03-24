@@ -557,7 +557,7 @@
       document.getElementById('errorMsg').style.display = 'none';
       resetForm();
     } catch(err) {
-      showErr('Network error. Check connection.');
+    console.log('fetch error:', err.message);
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
