@@ -330,7 +330,7 @@
 
 <div class="card">
 
-  <div class="timestamp-badge" style="display:none;" id="tsbadge">—</div>
+  <div class="timestamp-badge" id="tsbadge">—</div>
 
   <!-- DRIVER & TRUCK -->
   <div class="section-label">Driver &amp; Equipment</div>
@@ -404,7 +404,7 @@
   <input type="hidden" id="fuelSource" value="Yard Tank">
 
   <!-- SUBMIT -->
-  <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+  <button class="submit-btn" id="submitBtn" type="button" onclick="submitForm()">
     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     Submit Fuel Log
   </button>
@@ -425,23 +425,24 @@
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkHvAB47YXQLAMYu1fongsqm_7PIOJwVnS-bX0IONrFM7Vjalx9Qb1BDQ5KAQ4uguw/exec";
 
   // Auto-timestamp — locked to submission time
-  document.addEventListener("DOMContentLoaded", setTimestamp);
   function setTimestamp() {
     const n = new Date();
     document.getElementById('fuelDate').value =
       n.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) +
       '  ' + n.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
   }
+  setTimestamp();
+  setInterval(setTimestamp, 60000); // updates every minute until submit
+
+  // Live timestamp
   function updateTS() {
     const n = new Date();
     const el = document.getElementById('tsbadge');
-    if(el) el.textContent = n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) + '  ·  ' + n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    if(el) el.textContent =
+      n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) +
+      '  ·  ' + n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   }
-  // Call after DOM is ready via defer-like inline call
-  setTimestamp();
-  setInterval(setTimestamp, 60000);
-  updateTS();
-  setInterval(updateTS, 30000);
+  updateTS(); setInterval(updateTS, 30000);
 
   function updateBar(v) {
     document.getElementById('galBar').style.width = Math.min((parseFloat(v)||0)/200*100,100)+'%';
@@ -542,26 +543,21 @@
     btn.disabled = true;
     btn.innerHTML = '⏳ &nbsp;Submitting...';
 
-    // Fire and forget — no-cors means we can't read the response, so just trust it sent
     try {
       await fetch(APPS_SCRIPT_URL, {
         method:'POST', mode:'no-cors',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(d)
       });
+      // Save odometer reading for this truck
+      const truck = d.truckNum;
+      const miles = parseInt(d.odometer);
+      if (truck && miles) setLastOdo(truck, miles);
+      document.getElementById('successMsg').style.display = 'flex';
+      document.getElementById('errorMsg').style.display = 'none';
+      resetForm();
     } catch(err) {
-      // Only real offline/DNS failures land here
-      showErr('Network error. Check your connection.');
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
-      return;
-    }
-    // Fetch sent — save odometer and show success
-    const miles = parseInt(d.odometer);
-    if (d.truckNum && !isNaN(miles)) setLastOdo(d.truckNum, miles);
-    document.getElementById('successMsg').style.display = 'flex';
-    document.getElementById('errorMsg').style.display = 'none';
-    resetForm();
+      showErr('Network error. Check connection.');
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
