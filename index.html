@@ -330,7 +330,7 @@
 
 <div class="card">
 
-  <div class="timestamp-badge" id="tsbadge">—</div>
+  <div class="timestamp-badge" style="display:none;" id="tsbadge">—</div>
 
   <!-- DRIVER & TRUCK -->
   <div class="section-label">Driver &amp; Equipment</div>
@@ -425,6 +425,7 @@
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkHvAB47YXQLAMYu1fongsqm_7PIOJwVnS-bX0IONrFM7Vjalx9Qb1BDQ5KAQ4uguw/exec";
 
   // Auto-timestamp — locked to submission time
+  document.addEventListener("DOMContentLoaded", setTimestamp);
   function setTimestamp() {
     const n = new Date();
     document.getElementById('fuelDate').value =
