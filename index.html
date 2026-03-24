@@ -373,7 +373,7 @@
     <div class="field-row">
       <div class="field">
         <label>Date <span class="req">*</span></label>
-        <input type="text" id="fuelDate" readonly style="color:var(--text);cursor:default;font-size:0.9rem;" required>
+        <input type="text" id="fuelDate" readonly style="color:var(--text);cursor:default;font-size:0.9rem;">
       </div>
       <div class="field">
         <label>Odometer (mi) <span class="req">*</span></label>
@@ -535,7 +535,7 @@
       showErr('Odometer reading must be ≥ last recorded reading of ' + lastOdo.toLocaleString() + ' mi for ' + d.truckNum + '.');
       return;
     }
-    if (!d.driverName || !d.truckNum || !d.fuelDate || !d.odometer || !d.gallons) {
+    if (!d.driverName || !d.truckNum || !d.odometer || !d.gallons) {
       showErr('Please fill in all required fields.'); return;
     }
 
