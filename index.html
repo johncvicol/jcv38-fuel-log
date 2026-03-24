@@ -543,21 +543,24 @@
     btn.disabled = true;
     btn.innerHTML = '⏳ &nbsp;Submitting...';
 
+    // Fire and forget — no-cors means we cannot read the response
     try {
       await fetch(APPS_SCRIPT_URL, {
         method:'POST', mode:'no-cors',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(d)
       });
-      // Save odometer reading for this truck
-      const truck = d.truckNum;
-      const miles = parseInt(d.odometer);
-      if (truck && miles) setLastOdo(truck, miles);
-      document.getElementById('successMsg').style.display = 'flex';
-      document.getElementById('errorMsg').style.display = 'none';
-      resetForm();
     } catch(err) {
-      showErr('Network error. Check connection.');
+      showErr('Network error. Check your connection.');
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Fuel Log';
+      return;
+    }
+    const miles = parseInt(d.odometer);
+    if (d.truckNum && !isNaN(miles)) setLastOdo(d.truckNum, miles);
+    document.getElementById('successMsg').style.display = 'flex';
+    document.getElementById('errorMsg').style.display = 'none';
+    resetForm();
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
