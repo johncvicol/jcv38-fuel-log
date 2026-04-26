@@ -294,9 +294,143 @@
   /* focus ring */
   .field:focus-within { background: #f5f7ff; }
   .field input:focus, .field select:focus { color: var(--text); }
+
+  /* ── CONFIRM MODAL ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 25, 40, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 9998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeIn 0.2s ease-out;
+  }
+  .modal-backdrop.visible { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .modal-card {
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 20px 28px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    animation: modalIn 0.25s cubic-bezier(.2,.9,.3,1.05);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  .modal-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .modal-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 11px 0;
+    border-bottom: 1px solid #e8eaf0;
+    gap: 12px;
+  }
+  .summary-row:last-of-type { border-bottom: none; }
+  .summary-row .key {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .summary-row .val {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: right;
+    word-break: break-word;
+  }
+  .summary-row .val.big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .modal-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .btn-back, .btn-confirm {
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.15s;
+  }
+  .btn-back {
+    background: #e8eaf0;
+    color: var(--text);
+  }
+  .btn-back:active { transform: scale(0.97); background: #d8dbe5; }
+  .btn-confirm {
+    background: var(--success);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-confirm:active { transform: scale(0.97); background: #1e8449; }
+  .btn-confirm:disabled {
+    background: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+  .btn-confirm svg { width: 16px; height: 16px; fill: #fff; }
 </style>
 </head>
 <body>
+
+<!-- ── CONFIRM SUBMISSION MODAL ── -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal-card">
+    <div class="modal-title">Confirm Submission</div>
+    <div class="modal-sub">Review your entry before sending it to the sheet.</div>
+    <div id="confirmSummary"></div>
+    <div class="modal-buttons">
+      <button class="btn-back" type="button" onclick="closeConfirm()">← Go Back</button>
+      <button class="btn-confirm" id="btnConfirm" type="button" onclick="confirmAndSubmit()">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Confirm &amp; Submit
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="header">
   <div class="header-logo"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 742 1153" enable-background="new 0 0 742 1153" 
@@ -370,16 +504,14 @@
   <!-- DATE & ODOMETER -->
   <div class="section-label">Date &amp; Mileage</div>
   <div class="field-group">
-    <div class="field-row">
-      <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="text" id="fuelDate" readonly style="color:var(--text);cursor:default;font-size:0.9rem;">
-      </div>
-      <div class="field">
-        <label>Odometer (mi) <span class="req">*</span></label>
-        <input type="number" id="odometer" style="color:var(--text)!important;" placeholder="Loading..." inputmode="numeric" required oninput="validateOdometer(this.value)">
-        <div id="odoHint" style="font-size:0.68rem;margin-top:4px;color:var(--text-muted);"></div>
-      </div>
+    <div class="field">
+      <label>Date <span class="req">*</span></label>
+      <input type="text" id="fuelDate" readonly style="color:var(--text);cursor:default;font-size:0.95rem;">
+    </div>
+    <div class="field">
+      <label>Odometer (mi) <span class="req">*</span></label>
+      <input type="number" id="odometer" style="color:var(--text)!important;font-size:1.4rem;font-weight:600;" placeholder="Loading..." inputmode="numeric" required oninput="validateOdometer(this.value)">
+      <div id="odoHint" style="font-size:0.72rem;margin-top:8px;color:var(--text-muted);line-height:1.4;"></div>
     </div>
   </div>
 
@@ -517,51 +649,118 @@
     }
   }
 
-  async function submitForm() {
-    const d = {
+  // ── SUBMIT FLOW ───────────────────────────────────────────
+  // Tap Submit → validate → open confirm modal → tap Confirm → fetch → clear form
+  // Button stays disabled from first tap until form is fully cleared.
+
+  function submitForm() {
+    // Gather and validate BEFORE showing the modal so we don't waste the driver's time
+    const d = gatherFormData();
+
+    if (!d.driverName || !d.truckNum || !d.odometer || !d.gallons) {
+      showErr('Please fill in all required fields.');
+      return;
+    }
+    const lastOdo = getLastOdo(d.truckNum);
+    if (lastOdo && parseInt(d.odometer) < lastOdo) {
+      showErr('Odometer reading must be ≥ last recorded reading of ' + lastOdo.toLocaleString() + ' mi for ' + d.truckNum + '.');
+      return;
+    }
+
+    // Hide any prior error
+    document.getElementById('errorMsg').style.display = 'none';
+
+    // Build summary inside modal
+    const milesSince = lastOdo ? (parseInt(d.odometer) - lastOdo) : null;
+    let html =
+      '<div class="summary-row"><div class="key">Driver</div><div class="val">' + escapeHtml(d.driverName) + '</div></div>' +
+      '<div class="summary-row"><div class="key">Truck #</div><div class="val big">' + escapeHtml(d.truckNum) + '</div></div>' +
+      '<div class="summary-row"><div class="key">Date</div><div class="val">' + escapeHtml(d.fuelDate) + '</div></div>' +
+      '<div class="summary-row"><div class="key">Odometer</div><div class="val big">' + parseInt(d.odometer).toLocaleString() + ' mi</div></div>';
+    if (milesSince !== null) {
+      html += '<div class="summary-row"><div class="key">Miles Since Last</div><div class="val">+' + milesSince.toLocaleString() + ' mi</div></div>';
+    }
+    html += '<div class="summary-row"><div class="key">Gallons</div><div class="val big">' + escapeHtml(d.gallons) + '</div></div>';
+    if (d.repairNotes) {
+      html += '<div class="summary-row"><div class="key">Notes</div><div class="val">' + escapeHtml(d.repairNotes) + '</div></div>';
+    }
+    document.getElementById('confirmSummary').innerHTML = html;
+
+    // Stash the validated data on the modal so we don't re-read possibly-changed fields on confirm
+    document.getElementById('confirmModal')._pendingData = d;
+
+    // Show modal and lock the underlying Submit button immediately
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('confirmModal').classList.add('visible');
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirmModal').classList.remove('visible');
+    // Re-enable submit so driver can adjust and try again
+    document.getElementById('submitBtn').disabled = false;
+  }
+
+  async function confirmAndSubmit() {
+    const modal = document.getElementById('confirmModal');
+    const d = modal._pendingData;
+    if (!d) return;
+
+    const btnConfirm = document.getElementById('btnConfirm');
+    btnConfirm.disabled = true;
+    btnConfirm.innerHTML = '⏳ &nbsp;Sending...';
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d)
+      });
+
+      // Save odometer for this truck
+      const truck = d.truckNum;
+      const miles = parseInt(d.odometer);
+      if (truck && miles) setLastOdo(truck, miles);
+
+      // Close modal and clear form. Submit button gets re-enabled by resetForm.
+      modal.classList.remove('visible');
+      modal._pendingData = null;
+      resetForm();
+
+      document.getElementById('successMsg').style.display = 'flex';
+      document.getElementById('errorMsg').style.display = 'none';
+    } catch(err) {
+      console.log('fetch error:', err.message);
+      // Keep modal open on error so driver can retry without re-typing
+      btnConfirm.disabled = false;
+      btnConfirm.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Retry Submission';
+      showErr('Network error. Check connection and tap Retry.');
+    } finally {
+      // Reset confirm button label for next time
+      setTimeout(() => {
+        btnConfirm.disabled = false;
+        btnConfirm.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Confirm & Submit';
+      }, 500);
+    }
+  }
+
+  function gatherFormData() {
+    return {
       driverName:  document.getElementById('driverName').value.trim(),
       truckNum:    document.getElementById('truckNum').value.trim(),
       fuelDate:    new Date().toLocaleDateString('en-US', {month:'2-digit', day:'2-digit', year:'numeric'}),
       odometer:    document.getElementById('odometer').value.trim(),
       gallons:     document.getElementById('gallons').value.trim(),
       repairNotes: document.getElementById('repairNotes').value.trim(),
-      fuelSource:   document.getElementById('fuelSource').value,
+      fuelSource:  document.getElementById('fuelSource').value,
       timestamp:   new Date().toISOString()
     };
+  }
 
-    // Odometer validation
-    const lastOdo = getLastOdo(d.truckNum);
-    if (lastOdo && parseInt(d.odometer) < lastOdo) {
-      showErr('Odometer reading must be ≥ last recorded reading of ' + lastOdo.toLocaleString() + ' mi for ' + d.truckNum + '.');
-      return;
-    }
-    if (!d.driverName || !d.truckNum || !d.odometer || !d.gallons) {
-      showErr('Please fill in all required fields.'); return;
-    }
-
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '⏳ &nbsp;Submitting...';
-
-    try {
-      await fetch(APPS_SCRIPT_URL, {
-        method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(d)
-      });
-      // Save odometer reading for this truck
-      const truck = d.truckNum;
-      const miles = parseInt(d.odometer);
-      if (truck && miles) setLastOdo(truck, miles);
-      document.getElementById('successMsg').style.display = 'flex';
-      document.getElementById('errorMsg').style.display = 'none';
-      resetForm();
-    } catch(err) {
-    console.log('fetch error:', err.message);
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
-    }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
   }
 
   function resetForm() {
@@ -569,16 +768,17 @@
     document.getElementById('odoHint').textContent = '';
     document.getElementById('odometer').style.color = 'var(--text)';
     document.getElementById('odometer').placeholder = 'Select a truck first';
-    document.getElementById('toggleBox').style.background = 'var(--border)';
-    document.getElementById('toggleDot').style.left = '2px';
-    document.getElementById('sourceLabel').textContent = 'Fueling from yard bulk tank';
-    document.getElementById('sourceLabel').style.color = 'var(--text-muted)';
     ['driverName','truckNum','odometer','gallons','repairNotes'].forEach(id=>{
       const el=document.getElementById(id);
       if(el.tagName==='SELECT') el.selectedIndex=0; else el.value='';
     });
-    document.getElementById('fuelDate').valueAsDate = new Date();
     document.getElementById('galBar').style.width='0%';
+
+    // Re-enable submit button so the next entry can be started
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
+
     setTimeout(()=>document.getElementById('successMsg').style.display='none', 6000);
   }
 
