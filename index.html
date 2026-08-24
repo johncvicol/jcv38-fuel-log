@@ -6,7 +6,6 @@
 <title>JCV38 Corp — Fuel Log</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap');
-
   :root {
     --bg: #f0f2f5;
     --surface: #ffffff;
@@ -19,9 +18,7 @@
     --radius: 10px;
     --success: #27ae60;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     background: var(--bg);
     color: var(--text);
@@ -32,7 +29,6 @@
     align-items: center;
     padding-bottom: 48px;
   }
-
   /* ── HEADER ── */
   .header {
     width: 100%;
@@ -62,21 +58,19 @@
   .header-sub span {
     color: var(--red-light);
   }
-
   /* ── FORM CARD ── */
   .card {
     width: 100%;
     max-width: 460px;
     padding: 0 16px;
   }
-
   /* ── TIMESTAMP ── */
   .timestamp-badge {
     text-align: center;
     font-size: 0.72rem;
     color: var(--text-muted);
     letter-spacing: 0.05em;
-    margin-bottom: 22px;
+    margin-bottom: 10px;
     padding: 8px 14px;
     background: #ffffff;
     border: 1px solid var(--border);
@@ -84,7 +78,54 @@
     display: inline-block;
     width: 100%;
   }
-
+  /* ── FLEET SYNC BAR ── */
+  .sync-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 22px;
+    padding: 7px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+  }
+  .sync-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .sync-bar.syncing { border-color: #c5d0e8; background: #f5f7ff; color: #4a5568; }
+  .sync-bar.syncing .sync-dot { background: #5b7cc4; animation: pulse 1s ease-in-out infinite; }
+  .sync-bar.ok { border-color: #b2dfdb; background: #f0fff4; color: #2e7d52; }
+  .sync-bar.ok .sync-dot { background: var(--success); }
+  .sync-bar.stale { border-color: #f0d9a0; background: #fffaf0; color: #8a6d1f; }
+  .sync-bar.stale .sync-dot { background: #d99b20; }
+  .sync-bar.offline { border-color: #f5c6c6; background: #fff5f5; color: var(--red); }
+  .sync-bar.offline .sync-dot { background: var(--red-light); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+  .sync-refresh {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid currentColor;
+    color: inherit;
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0.85;
+  }
+  .sync-refresh:active { transform: scale(0.96); }
   /* ── SECTION LABEL ── */
   .section-label {
     font-family: 'Barlow Condensed', sans-serif;
@@ -95,7 +136,6 @@
     color: var(--red-light);
     margin: 0 0 8px 2px;
   }
-
   /* ── FIELD GROUP ── */
   .field-group {
     background: var(--surface);
@@ -104,13 +144,11 @@
     overflow: hidden;
     margin-bottom: 14px;
   }
-
   .field {
     padding: 13px 16px;
     border-bottom: 1px solid var(--border);
   }
   .field:last-child { border-bottom: none; }
-
   .field label {
     display: block;
     font-size: 0.65rem;
@@ -121,7 +159,6 @@
     margin-bottom: 5px;
   }
   .req { color: var(--red-light); margin-left: 2px; }
-
   .field input,
   .field select {
     color: var(--text);
@@ -146,12 +183,10 @@
   .field input::placeholder { color: var(--text-muted); font-weight: 400; }
   .field input[type="number"]::-webkit-outer-spin-button,
   .field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-
   /* ── TWO-COLUMN ── */
   .field-row { display: grid; grid-template-columns: 1fr 1fr; }
   .field-row .field { border-right: 1px solid var(--border); border-bottom: none; }
   .field-row .field:last-child { border-right: none; }
-
   /* ── GALLONS BIG INPUT ── */
   .gallons-block {
     background: var(--surface);
@@ -212,7 +247,6 @@
     border-radius: 99px;
     transition: width 0.3s ease;
   }
-
   /* ── NOTES TEXTAREA ── */
   .notes-wrap {
     margin-bottom: 14px;
@@ -234,7 +268,6 @@
     border-color: var(--red);
   }
   .notes-wrap textarea::placeholder { color: var(--text-muted); }
-
   /* ── SUBMIT ── */
   .submit-btn {
     width: 100%;
@@ -259,7 +292,6 @@
   .submit-btn:active { transform: scale(0.98); background: #a93226; }
   .submit-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
   .submit-btn svg { width: 18px; height: 18px; fill: #fff; }
-
   /* ── STATUS ── */
   .status {
     display: none;
@@ -274,8 +306,6 @@
   .status.success { background: #1a3328; border: 1px solid #2ecc71; color: #2ecc71; }
   .status.error   { background: #2d1a1a; border: 1px solid var(--red-light); color: var(--red-light); }
   .status svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
-
-
   .header-logo {
     height: 90px;
     width: auto;
@@ -288,13 +318,10 @@
     height: 90px;
     width: auto;
   }
-
   select option { background: #ffffff; color: var(--text); }
-
   /* focus ring */
   .field:focus-within { background: #f5f7ff; }
   .field input:focus, .field select:focus { color: var(--text); }
-
   /* ── CONFIRM MODAL ── */
   .modal-backdrop {
     position: fixed;
@@ -343,6 +370,22 @@
     color: var(--text-muted);
     text-align: center;
     margin-bottom: 20px;
+  }
+  .modal-warn {
+    background: #fffaf0;
+    border: 1px solid #f0d9a0;
+    color: #8a6d1f;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .modal-warn.danger {
+    background: #fff0f0;
+    border-color: #f5c6c6;
+    color: #a93226;
   }
   .summary-row {
     display: flex;
@@ -415,12 +458,12 @@
 </style>
 </head>
 <body>
-
 <!-- ── CONFIRM SUBMISSION MODAL ── -->
 <div class="modal-backdrop" id="confirmModal">
   <div class="modal-card">
     <div class="modal-title">Confirm Submission</div>
     <div class="modal-sub">Review your entry before sending it to the sheet.</div>
+    <div id="confirmWarn"></div>
     <div id="confirmSummary"></div>
     <div class="modal-buttons">
       <button class="btn-back" type="button" onclick="closeConfirm()">← Go Back</button>
@@ -431,13 +474,11 @@
     </div>
   </div>
 </div>
-
 <div class="header">
-  <div class="header-logo"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 742 1153" enable-background="new 0 0 742 1153" 
+  <div class="header-logo"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 742 1153" enable-background="new 0 0 742 1153"
  xmlns:xlink="http://www.w3.org/1999/xlink">
  <g id="Layer_1">
   <metadata id="FutureCorpID_Layer"/>
-
   <path fill="#000000" d="M682.37,566.49 C672.9,512.41 651.13,467.21 586.72,367.9 C555.09,319.12 542.41,298.15 529.94,273.99 C484.97,186.87 435.76,73.4 411.1,0 C400.15,32.62 377.82,89.3 357.19,136.86 C336.74,184.01 314.91,230.13 292.27,273.99 C279.8,298.16 267.12,319.12 235.48,367.91 C203.44,417.3 190.18,439.2 176.84,464.71 C157.33,502.02 145.36,534.94 139.84,566.49 C121.64,670.42 143.55,759.23 202.92,822.21 C254.16,876.55 330.76,907.78 412.81,907.78 C494.54,907.78 570.27,876.8 620.74,822.71 C679.3,759.94 700.68,671.06 682.37,566.49 L682.37,566.49 z"/>
   <path fill="#FFFFFF" d="M574.97,683.06 C567.95,684.92 567.39,685.66 567.64,692.71 C567.75,695.71 568.01,698.32 568.83,704.3 L570.24,714.63 L530.08,714.63 C530.04,714.6 529.99,714.51 529.94,714.37 C528.86,704.07 522.18,700.63 512.77,705.54 C511.21,706.35 509.64,709 509.56,710.94 C509.29,718.2 509.42,725.46 509.94,732.7 C510.28,737.44 510.7,741.56 511.8,751.01 L512.89,760.25 C513.05,761.64 512.85,762.88 512.25,764.21 C511.62,762.47 511.03,760.71 510.49,758.95 C501.49,729.51 492.5,700.06 483.54,670.61 C483.17,669.4 482.75,668.21 482.28,667.04 L482.1,666.59 C479.45,659.97 479.68,657.17 483.1,654.11 C483.43,653.81 483.61,653.42 483.89,652.39 L484.05,651.8 C485.57,647.13 484.92,646.27 480.1,646.55 C476.74,646.75 475.46,645.76 475.46,642.95 L475.45,610.92 L485.12,616.82 C512.61,634.66 540.05,652.54 567.47,670.48 C568.13,670.91 568.56,671.5 569.4,673.09 L571.02,675.95 L572.58,678.5 L574.76,681.05 L575.78,682.16 L575.38,682.66 L574.97,683.06 L574.97,683.06 zM438.1,607 C441.64,603.03 445.03,602.73 449.35,606 L438.1,607 L438.1,607 zM445.88,724.39 L410.26,724.39 C411.47,717.59 412.64,710.83 413.78,704.13 C417.71,680.94 421.57,657.74 425.38,634.52 C425.86,631.64 426.74,630.69 429.13,630.52 C432.16,630.3 433.65,631.25 434.44,633.89 L439.64,651.17 C439.85,651.91 439.49,653.06 438.65,654.43 C438.36,654.88 438.05,655.23 437.24,655.98 L436.07,657.17 C434.81,658.78 434.29,660.26 434.62,661.35 C434.94,662.45 436.07,663.09 437.85,663.21 C443.65,663.58 446.1,666.59 446.43,673.72 C446.86,682.78 447.01,692.49 446.95,705.59 C446.93,708.78 446.8,711.52 446.33,718.12 L445.88,724.39 L445.88,724.39 zM383.51,725.87 L382.47,725.73 C383.49,717.13 384.51,708.54 385.52,699.95 C388.03,678.81 390.5,657.67 392.95,636.52 C393.53,631.5 393.83,631.32 399.42,632.58 L383.51,725.87 L383.51,725.87 zM379.86,690.52 C379.74,691.42 378.39,692.78 377.58,692.8 L354.36,692.9 L357.22,669.69 C357.58,666.71 358.72,665.66 361.43,665.79 L383.02,666.9 L379.86,690.52 L379.86,690.52 zM376.08,721.7 L350.51,721.7 L352.74,705.08 C352.86,704.39 352.97,703.7 353.09,703.01 C354.07,695.06 354.09,695.04 362.16,695.44 L379.26,696.28 L376.08,721.7 L376.08,721.7 zM372.84,745.13 C371.9,751.76 371.83,751.82 365.08,751.43 L347.13,750.4 L347.73,744.54 C348.63,735.81 349.07,732.14 349.7,727.89 C349.86,726.83 352.02,725.26 353.39,725.21 L375.68,725.08 L372.84,745.13 L372.84,745.13 zM368.44,779.87 L343.52,779.87 L345.95,757.82 C346.28,754.76 347.88,753.38 350.93,753.52 L371.6,754.48 C370.52,763.15 369.47,771.61 368.44,779.87 L368.44,779.87 zM366.46,792.56 C366.23,793.53 364.43,794.93 363.58,794.79 L342.17,790.68 L343.24,783.96 L367.51,783.96 L367.29,786.43 C367.02,789.64 366.83,791.01 366.46,792.56 L366.46,792.56 zM365.53,800.27 L364.11,809.13 L339.95,809.13 L341.61,795.33 C341.96,792.42 343.28,791.56 346.15,792.36 C351.66,793.9 357.2,795.31 362.79,796.58 C365.18,797.12 365.94,798.15 365.53,800.27 L365.53,800.27 zM360.67,836.49 C360.51,837.44 358.74,838.86 357.73,838.85 L336.02,837.97 L339.15,814.13 C339.23,813.51 340.39,812.57 341.09,812.57 L364.04,812.47 L360.67,836.49 L360.67,836.49 zM358.46,852.16 C358.04,854.79 357.72,857.42 357.51,860.07 C357.23,863.71 357.1,864.69 356.78,865.64 C356.4,866.78 355.77,867.36 354.61,867.67 C353.61,867.93 352.52,868 348.84,868.01 L332.03,868.05 L335.06,841.97 L360.23,841.97 C359.59,845.41 359,848.81 358.46,852.16 L358.46,852.16 zM353.85,889.92 C346.89,889.34 340.05,888.74 333.33,888.11 C330.37,887.84 329.28,886.3 329.92,883.29 L331.25,875.2 L331.8,871.46 L355.99,871.46 L353.85,889.92 L353.85,889.92 zM348.68,896.43 L328.56,896.19 C328.58,895.69 328.61,895.16 328.66,894.49 L348.74,895.84 C348.72,896.03 348.7,896.23 348.68,896.43 L348.68,896.43 zM360.71,640.9 C361.03,638.19 362.18,637.08 364.65,637.08 L386.86,637.11 L383.7,661.21 C383.57,662.09 382.14,663.38 381.3,663.39 L358.03,663.52 L360.71,640.9 L360.71,640.9 zM338.84,615.3 C338.89,614.74 338.95,614.17 339.01,613.6 C345.74,614.28 352.46,614.95 359.18,615.62 C359.11,616.34 359.03,617.05 358.96,617.76 C355.21,619.1 352.11,618.9 345.17,616.85 C341.91,615.89 340.49,615.54 338.84,615.3 L338.84,615.3 zM362.28,627.78 L366.66,628.89 L364.1,631.59 L387.4,631.59 C383.32,635.26 373.22,636.03 362.28,633.49 L362.28,627.78 L362.28,627.78 zM363.8,616.82 L368.75,617.29 C378.47,618.04 382.52,619.45 386.82,623.61 L380.57,623.69 C373.75,623.78 370.95,623.74 367.7,623.49 C363.63,623.18 363.21,622.46 363.8,616.82 L363.8,616.82 zM365.49,608.47 L390.15,608.47 L389.06,616.26 C386.5,615.36 384.23,614.8 379.02,613.81 C371.68,612.42 368.63,611.49 365.33,609.65 C365.38,609.26 365.44,608.86 365.49,608.47 L365.49,608.47 zM368.62,580.95 C368.75,580 370.05,578.61 370.82,578.59 L393.84,578.49 L391.66,596.95 C390.68,605.24 390.62,605.29 382.27,605.45 L371.11,605.24 L368.03,605.13 L366.36,604.8 L365.36,604.54 L368.62,580.95 L368.62,580.95 zM315.15,511.37 C306.17,544.59 296.31,571.79 284.45,596.09 C283.5,598.03 282.78,598.99 281.58,599.92 C281.43,598.3 281.31,596.69 281.23,595.07 C280.28,563.26 282.15,529.64 286.93,492.41 L286.98,492.04 C287.15,490.68 287.3,490.19 287.58,490.1 C290.1,489.23 290.74,487.95 290.43,484.4 L290.35,482.39 L291.38,461.29 C297.24,462.74 299.14,462.1 300.06,458.36 C301.48,452.62 299.94,448.96 294.89,446.12 L297.39,436.68 C300.28,425.75 301.62,420.99 303.3,415.58 C308.55,398.75 314.09,382.02 319.93,365.39 C322.58,357.83 325.82,350.75 329.53,344.38 C332.31,339.61 337.31,336.12 343.83,334.4 C344.67,334.17 346.79,335.98 347.16,337.21 C347.68,338.99 347.91,340.61 348.2,344.38 L348.29,345.5 C349.52,361.48 348.36,375.17 343.15,406.45 L342.73,408.93 C339.69,427.17 335.7,442.66 324.97,477.87 C319.71,495.14 317.51,502.67 315.15,511.37 L315.15,511.37 zM279.24,415.9 C278.22,416.47 277.52,417.97 276.83,421.06 L273.36,438.32 C273.07,439.52 272.63,440.52 271.39,442.76 L270.33,444.76 C269.85,444.59 269.36,444.42 268.88,444.25 C269.31,442.36 269.69,440.46 270.03,438.55 C274.55,409.31 284.52,379.64 300.93,346.57 C302.74,342.93 303.61,342.77 306.5,345.59 C306.91,345.99 307.39,346.19 308.77,346.54 L310.24,346.95 L309.21,349.53 L303.37,350.02 C303.4,350.39 303.43,350.77 303.46,351.14 L304.86,352 C306.55,352.98 307.03,353.37 306.98,353.74 C306.7,355.87 306.29,357.7 305.14,361.87 L304.51,364.15 L303.71,364.26 C301.09,363.67 299.55,364.76 299.78,367.04 C299.85,367.75 300.2,368.31 301.5,369.77 L302.91,371.45 L302.76,371.8 L301.79,374.39 L301.56,376.14 L301.52,376.92 L302.48,376.7 C303.62,376.47 304.03,376.31 304.3,375.96 C304.73,375.42 305.01,374.89 305.55,373.57 L306.32,371.88 C307.37,370.09 308.46,368.33 309.59,366.58 C310.01,366.77 310.43,366.96 310.84,367.15 L310.52,368.75 L309.68,372.23 L298.49,404.73 L286.77,441.96 C286.54,442.69 286.25,443.29 285.49,444.64 L284.81,445.84 C284.4,445.67 283.98,445.5 283.57,445.32 C282.92,441.61 283.49,438.6 286.07,431.99 C287.82,427.49 288.39,425.52 288.63,423.18 C289.01,419.29 289.75,416.05 291.88,408.78 L293.97,401.12 C294.85,397.33 295.98,394.11 298.96,386.86 L301.44,380.84 L299.02,381.91 C296.38,383.09 295.3,383.66 294.18,384.48 C289.78,387.69 287.41,392.36 286.91,398.77 L286.85,399.62 C286.1,409.34 284.38,413.01 279.24,415.9 L279.24,415.9 zM274.51,714.94 C273.01,714.83 271.5,714.72 269.98,714.6 L270.24,712.77 C270.58,710.29 270.79,709.23 271.17,708.06 C271.28,707.73 271.66,707.56 273.02,707.19 L274.51,706.75 L274.51,714.94 L274.51,714.94 zM265.02,676.79 C264.42,676.71 263.51,675.03 263.46,673.93 C263.02,662.59 262.72,651.24 262.56,639.9 C262.55,638.95 263.9,637.33 264.97,637.03 C266.7,636.54 268.78,636.47 270.78,636.83 C271.74,637.01 273.1,638.45 273.11,639.31 C273.31,657.22 273.41,675.13 273.4,693.05 C273.4,694.13 273.29,695.04 272.89,697.3 L272.48,699.64 C268.6,695.89 267.49,692.28 267.58,683.68 L267.62,680.45 C267.64,677.84 267.08,677.05 265.02,676.79 L265.02,676.79 zM268.23,450.86 C268.99,451.08 269.76,451.29 270.53,451.51 L267.92,460.97 L265.72,460.4 C266.56,457.22 267.39,454.04 268.23,450.86 L268.23,450.86 zM325.79,338.06 C325.91,338.52 326.02,338.98 326.13,339.44 L324.81,339.72 L321.88,340.16 L318.98,339.95 C316.7,339.7 315.73,339.68 314.64,339.86 C313.05,340.13 311.7,340.54 308.62,341.68 L306.05,342.63 C305.9,342.16 305.76,341.7 305.62,341.23 C309.07,338.56 312.34,337.85 320.16,338.08 L325.79,338.06 L325.79,338.06 zM259.35,676.39 C256.42,676.83 255.54,678.66 255.98,683.31 C256.26,686.25 256.33,689.18 256.19,692.12 C256.17,692.66 256.01,693.12 255.49,694.17 L254.8,695.94 L254.54,697.38 C253.72,701.86 253.48,703.82 253.48,706.05 C253.49,707.14 253.68,708.08 254.33,710.25 L255.1,713.34 C255.15,713.71 254.94,714.06 254.16,714.93 L253.53,715.68 L252.89,714.97 C252.12,714.18 251.9,713.83 251.87,713.41 L251.69,702.52 C251.35,683.08 251.07,663.65 250.84,644.21 C250.75,637.04 250.85,636.96 259.35,637.73 L259.35,676.39 L259.35,676.39 zM254.73,725.62 C253.57,721.8 251.71,719.95 248.29,719.21 L254.73,717.64 L254.73,725.62 L254.73,725.62 zM229.61,467.26 C229.66,466.87 229.71,466.47 229.76,466.08 L250.9,465.28 C251.62,465.28 253.01,467.46 252.89,468.41 C252.68,470 252.37,471.32 251.43,474.65 L250.59,477.62 L229.61,467.26 L229.61,467.26 zM657.47,771.47 L664.24,758.03 L669.89,744.41 L672.85,736.16 L675.02,729.84 L676.79,723.75 L674.61,709.4 C673.3,700.11 673.1,699.96 663.58,700.49 C662.74,700.5 661.9,700.57 661.07,700.67 C655.28,701.56 654.43,702.54 654.28,708.41 L653.96,712.15 L618.78,713.09 C614.04,713.22 611.48,711.37 610.64,707.22 C610.41,706.07 610.46,704.69 610.8,703.07 L612.48,697.04 L612.57,696.52 C613.68,689.95 614.75,687.66 617.37,686.2 L616.96,683.66 C616.54,681.49 616.51,680.72 616.79,679.89 C625.94,653.08 628.46,628.32 624.49,604.21 L627.66,602.27 L624.81,599.88 C621.9,597.44 620.66,596.47 619.13,595.46 L568.44,561.7 C494.55,512.49 420.54,463.47 346.4,414.63 C344.26,413.22 343.89,412.09 344.6,409.11 C351.17,381.24 352.94,361.97 350.61,343.37 C349.8,336.88 350.87,333.62 354.7,330.88 C355.26,330.48 355.56,329.87 356.03,328.16 L356.49,326.69 L354.91,326.08 C353.1,325.31 352.36,325.15 351.62,325.36 C348.53,326.23 345.28,327.6 341.61,329.54 C338.07,331.43 334.71,332.11 330.81,331.75 C321.23,330.86 312.31,332.37 304.21,336.27 C298.92,338.82 295.31,342.34 293.07,347.17 C278.89,377.72 269.58,402.54 263.32,426.5 C262.12,431.1 260.9,435.7 259.67,440.29 C256.47,430.14 255.82,421.25 256.76,400.8 C257.16,391.94 257.25,388.1 257.16,383.69 C253.58,382.62 252.39,383.39 252.42,386.71 L253.05,441.35 L254.08,461.77 L222.75,464.05 C222.63,464.49 222.51,464.93 222.39,465.38 L224.26,466.92 C226.39,468.69 227.36,469.39 228.55,470.03 C232.15,471.95 235.63,473.62 242.55,476.73 C246.95,478.71 248.05,480.7 246.72,484.29 C246.34,485.3 246.18,486.23 245.99,488.49 L245.77,490.54 L248.73,492.08 L247.04,508.67 C245.14,527.41 244.4,535.48 243.73,544.81 C241.81,571.39 241.91,600.04 244.02,634.69 C244.05,635.23 244.19,635.69 244.66,636.74 L244.91,637.31 L245.63,638.73 C246.41,640.14 246.64,640.75 246.65,641.46 C246.93,663.88 247.14,686.29 247.29,708.71 L247.42,710.85 C247.83,715.53 247.01,716.96 243.73,717.26 L245.59,726.94 L244.26,728.09 C244.33,728.43 244.39,728.78 244.45,729.12 L260.61,729.12 L260.13,731.98 C259.68,734.65 259.56,735.69 259.55,736.93 C259.5,742.08 259.69,747.22 260.09,752.35 L261.02,757.97 C261.76,761.58 261.99,763.15 262.03,764.96 L262.65,869.01 L265.41,870.51 L267.51,871.71 L265.24,757.81 C265.21,756.37 265.74,755.13 266.71,754.39 C274.01,748.78 274.51,746.3 269.92,738.61 L269.43,737.84 L268.44,736.08 L266.17,729.54 L266.9,729.01 L267.24,728.8 C271,728.49 274.75,728.18 278.51,727.86 C283.23,727.45 284.61,725.07 282.67,720.7 C282.42,720.14 282.11,719.68 281.31,718.7 L280.65,717.86 L283.04,715.02 C279.72,715.04 278.79,713.93 278.73,709.89 C278.43,690.98 278.13,672.07 277.83,653.15 C277.75,647.89 277.73,642.56 277.77,637.17 L278.44,637 L279.53,636.8 C283.39,636.85 284.62,635.31 283.9,631.37 C283.24,627.78 282.93,624.59 282.56,617.23 L282.53,616.74 C282.37,613.55 282.58,611.72 283.28,610.26 C294.87,586.19 304.8,559.54 315.98,522.58 L320.25,508.45 L321.24,508.98 L322.47,509.68 L344.53,524.17 C385.49,551.07 375.25,544.34 416.17,571.3 C418.62,572.91 420.52,574.64 424.67,578.99 L428.04,582.52 C428.2,582.68 428.25,582.88 428.29,583.56 L428.38,584.42 L424.62,584.33 C420.56,584.22 418.84,584.26 416.87,584.5 C407.88,585.57 404.43,590.55 406.52,599.43 L408.16,606.37 L408.04,608.04 L407.87,609.12 L404.29,604.89 C402.89,606.89 401.56,608.79 400.3,610.59 C402.7,612.62 403.1,614.36 402.11,618.43 C401.48,621.01 401.41,622.16 401.79,623.49 L399.71,623 C395.76,622.18 394.87,621.19 395.25,618.04 L396.95,603.74 C398.32,592.16 398.97,587.14 399.86,581.38 C400.46,577.43 399.29,575.97 395.49,575.96 C381.42,575.91 374.72,575.97 367.39,576.21 C366.31,576.25 364.48,578.17 364.23,579.54 C363.52,583.52 363,587 361.91,595.02 L361.25,599.89 C359.87,610.11 359.86,610.12 349.74,609.32 L349.06,609.27 C344.74,608.93 340.72,609.02 332.36,609.65 C331.26,609.73 329.66,611.05 328.9,612.49 C327.45,615.27 328.63,617.6 331.96,618.53 L352.69,623.71 C358.68,625.21 358.67,625.21 357.87,630.94 L357.82,631.27 C354.84,652.61 351.91,673.97 349.05,695.33 C345.46,722.12 341.95,748.92 338.52,775.73 C338.17,778.45 337.74,780.79 336.62,786.16 C334.66,795.62 334.13,799.8 334.31,804.73 C334.4,807.55 334.17,810.01 333.28,815.68 L332.64,819.74 L321.94,894.53 L330.89,897.05 L338.11,898.9 L353.83,902.54 L369,904.78 L375.72,905.68 L380.23,906.1 L381.28,901.66 L386.09,871.08 C391.89,834.17 394.57,818.14 397.98,799.78 C399.33,792.47 400.35,786.1 402.52,771.41 C405.42,751.69 406.87,743.14 408.99,733.39 C409.26,732.18 410.99,730.55 412.07,730.49 C422.55,729.91 433.03,729.55 443.53,729.41 C444.31,729.4 445.82,731.61 445.79,732.73 C445.5,743.51 445.12,754.28 444.63,765.06 C443.59,788.13 442.58,811.21 441.58,834.29 C440.54,858.66 439.51,882.81 438.5,906.78 L452.03,905.43 L466.19,903.39 L470.8,767.79 L471.16,761.01 L471.9,762.78 L472.54,764.43 C479.31,786.94 486.01,809.48 492.64,832.04 L510.37,892.42 C524.55,887.28 535.4,882.98 545.51,878.49 C542.57,869.34 539.82,860.15 537.25,850.91 C535.19,843.52 533.93,835.43 533.52,826.95 C532.68,809.74 531.89,792.52 531.17,775.31 L530.55,760.65 L530.53,748.64 C531.16,748.38 531.8,748.12 532.44,747.85 L549.42,758.45 C551.22,759.52 553.19,760.13 554.81,760.11 C572.87,759.94 590.92,759.67 608.98,759.31 L626.18,758.69 C633,758.69 639.12,756.34 644.95,751.47 L655.45,743.35 L656.25,748.15 C656.99,752.64 657.23,754.43 657.35,756.57 L657.47,771.47 L657.47,771.47 z"/>
   <path fill="#FFFFFF" d="M284.02,575.77 C284.34,575.78 284.67,575.79 284.99,575.81 L286.02,572.25 C294.97,536.41 303.93,500.57 312.9,464.73 L315.03,456.23 C322.84,425.02 325.28,411.27 325.88,395.1 C326.53,377.64 330.59,359.96 339.44,336.04 L340.94,331.51 C340.44,331.28 339.94,331.05 339.43,330.82 C337.86,333.87 336.44,336.51 333.11,342.55 C325.66,356.06 322.72,362.05 320.04,369.2 C315.51,381.24 312.06,391.91 304.7,416.64 L300.36,431.18 C300.02,432.33 300.13,433.49 300.84,436.24 L301.22,437.7 C301.44,438.71 301.68,439.57 302.27,441.56 C303.28,444.95 303.61,446.43 303.74,448.16 C304.13,453.21 302.11,456.01 296.79,457.75 C296.05,457.99 295.27,458.26 294.44,458.55 C293.94,473.4 293.23,481.13 291.59,489.34 C289.4,500.29 288.24,509.96 286.42,532.37 L285.49,543.95 C285.03,549.61 284.78,554.54 284.37,565.91 L284.02,575.77 L284.02,575.77 zM291.38,454.18 C297.24,455.63 299.14,454.99 300.06,451.26 C301.48,445.51 299.94,441.85 294.88,439.01 L297.4,429.5 C300.29,418.6 301.63,413.86 303.32,408.47 C309.23,389.59 314.61,373.33 319.92,358.27 C322.58,350.71 325.82,343.63 329.53,337.27 C332.31,332.5 337.31,329.01 343.83,327.28 C344.67,327.06 346.79,328.86 347.15,330.1 C347.68,331.88 347.91,333.5 348.2,337.27 L348.29,338.4 C349.7,356.76 348.48,376.62 344.38,401.81 C341.15,421.66 336.92,438.93 325.69,478.22 C321.17,494.01 322.28,490.06 317.95,505.9 C309.35,537.42 297.84,568.63 285.52,593.87 L284.99,595.05 C283,599.46 281.87,601.47 280.99,602.15 L280.2,587.96 C279.35,559.19 281.33,528.91 286.93,485.3 L286.97,484.94 C287.15,483.57 287.3,483.08 287.58,482.99 C290.1,482.12 290.74,480.84 290.43,477.3 C290.34,476.24 290.32,475.79 290.34,475.28 L291.38,454.18 L291.38,454.18 z"/>
@@ -461,11 +502,14 @@
 </svg></div>
   <div class="header-sub">Driver Fuel Log &nbsp;·&nbsp; <span>* Required fields</span></div>
 </div>
-
 <div class="card">
-
   <div class="timestamp-badge" id="tsbadge">—</div>
-
+  <!-- FLEET ODOMETER SYNC STATUS -->
+  <div class="sync-bar syncing" id="syncBar">
+    <span class="sync-dot" id="syncDot"></span>
+    <span id="syncTxt">Loading fleet mileage…</span>
+    <button type="button" class="sync-refresh" onclick="syncOdometers(true)">Refresh</button>
+  </div>
   <!-- DRIVER & TRUCK -->
   <div class="section-label">Driver &amp; Equipment</div>
   <div class="field-group">
@@ -473,22 +517,17 @@
       <label>Driver Name <span class="req">*</span></label>
       <select id="driverName" required>
         <option value="">— Select your name —</option>
-        
-        <!-- ✏️ REPLACE WITH YOUR ACTUAL DRIVERS -->
         <option>Bruce T.</option>
         <option>William H.</option>
-        <option>Aaron G.</option>
+        <option>Ed F.</option>
         <option>Jason G.</option>
         <option>John V.</option>
-        <option>Adam M.</option>
       </select>
     </div>
     <div class="field">
       <label>Truck # <span class="req">*</span></label>
       <select id="truckNum" required onchange="loadOdometerForTruck()">
         <option value="">— Select truck —</option>
-        
-        <!-- ✏️ REPLACE WITH YOUR ACTUAL TRUCKS -->
         <option>13</option>
         <option>03</option>
         <option>29</option>
@@ -499,11 +538,9 @@
         <option>Crudes Chariot</option>
         <option>Service Truck</option>
         <option>Crudes New Ride</option>
-      
       </select>
     </div>
   </div>
-
   <!-- DATE & ODOMETER -->
   <div class="section-label">Date &amp; Mileage</div>
   <div class="field-group">
@@ -517,7 +554,6 @@
       <div id="odoHint" style="font-size:0.72rem;margin-top:8px;color:var(--text-muted);line-height:1.4;"></div>
     </div>
   </div>
-
   <!-- GALLONS -->
   <div class="section-label">Fuel Amount <span class="req">*</span></div>
   <div class="gallons-block">
@@ -529,21 +565,17 @@
     </div>
     <div class="gal-bar-track"><div class="gal-bar-fill" id="galBar"></div></div>
   </div>
-
   <!-- REPAIR NOTES -->
   <div class="section-label">Repair / Service Notes <span style="color:var(--text-muted);font-weight:400;font-size:0.65rem;">(optional)</span></div>
   <div class="notes-wrap">
     <textarea id="repairNotes" placeholder="Describe any repairs, issues, or service performed on this truck..."></textarea>
   </div>
-
   <input type="hidden" id="fuelSource" value="Yard Tank">
-
   <!-- SUBMIT -->
   <button class="submit-btn" id="submitBtn" type="button" onclick="submitForm()">
     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     Submit Fuel Log
   </button>
-
   <div class="status success" id="successMsg" style="display:none;">
     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
     Fuel log submitted — sheet updated!
@@ -552,14 +584,181 @@
     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
     <span id="errTxt">Submission failed. Try again.</span>
   </div>
-
 </div>
-
 <script>
-  // ✏️ PASTE YOUR APPS SCRIPT URL HERE AFTER DEPLOYING
+  // ─────────────────────────────────────────────────────────
+  //  JCV38 FUEL LOG — v3
+  //  Odometer memory now lives in the Google Sheet, not on the
+  //  driver's phone. Any driver sees the last reading logged by
+  //  ANY driver for that truck.
+  // ─────────────────────────────────────────────────────────
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkHvAB47YXQLAMYu1fongsqm_7PIOJwVnS-bX0IONrFM7Vjalx9Qb1BDQ5KAQ4uguw/exec";
 
-  // Auto-timestamp — locked to submission time
+  // localStorage is now ONLY an offline fallback cache — never the source of truth.
+  const CACHE_KEY = 'jcv38_odo_cache_v3';
+  const STALE_MS  = 90 * 1000;   // re-sync if data older than this when tab refocuses
+  const BIG_JUMP  = 2500;        // miles — soft "double-check that" warning
+
+  // { map: { "13": {odometer, date, driver} }, source: 'server'|'cache'|'none', at: ms }
+  let ODO = { map: {}, source: 'none', at: 0 };
+  let syncing = false;
+
+  // Truck IDs must match between the phone and the sheet.
+  // Sheets happily turns "03" into the number 3, so normalise both ends.
+  function normTruck(v) {
+    const s = String(v == null ? '' : v).trim();
+    if (/^\d+$/.test(s)) return String(parseInt(s, 10));
+    return s.toUpperCase().replace(/\s+/g, ' ');
+  }
+
+  // ── JSONP: Apps Script /exec + fetch() = CORS pain. A script tag has none. ──
+  function jsonp(url, timeoutMs) {
+    return new Promise(function(resolve, reject) {
+      const cb = 'jcv38cb_' + Math.random().toString(36).slice(2);
+      const s = document.createElement('script');
+      let done = false;
+      function cleanup() { try { delete window[cb]; } catch(e) { window[cb] = undefined; } if (s.parentNode) s.parentNode.removeChild(s); }
+      const timer = setTimeout(function() {
+        if (done) return; done = true; cleanup(); reject(new Error('timeout'));
+      }, timeoutMs || 15000);
+      window[cb] = function(data) {
+        if (done) return; done = true; clearTimeout(timer); cleanup(); resolve(data);
+      };
+      s.onerror = function() {
+        if (done) return; done = true; clearTimeout(timer); cleanup(); reject(new Error('network'));
+      };
+      s.src = url + (url.indexOf('?') > -1 ? '&' : '?') + 'callback=' + cb + '&_=' + Date.now();
+      document.head.appendChild(s);
+    });
+  }
+
+  function setSyncUI(state, text) {
+    const bar = document.getElementById('syncBar');
+    bar.className = 'sync-bar ' + state;
+    document.getElementById('syncTxt').textContent = text;
+  }
+
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const c = JSON.parse(raw);
+      if (c && c.map) return c;
+    } catch(e) {}
+    return null;
+  }
+
+  async function syncOdometers(manual) {
+    if (syncing) return;
+    syncing = true;
+    setSyncUI('syncing', manual ? 'Refreshing fleet mileage…' : 'Loading fleet mileage…');
+    try {
+      const res = await jsonp(APPS_SCRIPT_URL + '?action=lastodo', 15000);
+      if (!res || res.ok !== true) throw new Error((res && res.error) || 'bad response');
+      const map = {};
+      const src = res.trucks || {};
+      Object.keys(src).forEach(function(k) { map[normTruck(k)] = src[k]; });
+      ODO = { map: map, source: 'server', at: Date.now() };
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(ODO)); } catch(e) {}
+      setSyncUI('ok', 'Fleet mileage synced · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    } catch(err) {
+      if (ODO.source !== 'server') {
+        const c = readCache();
+        if (c) { ODO = { map: c.map, source: 'cache', at: c.at || 0 }; }
+      }
+      if (ODO.source === 'server') {
+        setSyncUI('stale', 'Refresh failed — using last synced data');
+      } else if (ODO.source === 'cache') {
+        setSyncUI('stale', 'Offline — showing cached mileage from this phone');
+      } else {
+        setSyncUI('offline', 'Offline — last mileage unavailable. Entry will be flagged.');
+      }
+    } finally {
+      syncing = false;
+      loadOdometerForTruck();
+    }
+  }
+
+  function getLast(truckRaw) {
+    const k = normTruck(truckRaw);
+    const e = ODO.map[k];
+    if (!e) return null;
+    const odo = parseInt(e.odometer, 10);
+    if (!odo && odo !== 0) return null;
+    return { odometer: odo, date: e.date || '', driver: e.driver || '' };
+  }
+
+  function pill(bg, border, color, html) {
+    return '<span style="display:inline-block;background:' + bg + ';border:1px solid ' + border +
+           ';border-radius:6px;padding:3px 9px;font-size:0.68rem;font-weight:600;color:' + color +
+           ';letter-spacing:0.04em;">' + html + '</span>';
+  }
+
+  function loadOdometerForTruck() {
+    const truck = document.getElementById('truckNum').value;
+    const odoInput = document.getElementById('odometer');
+    const hint = document.getElementById('odoHint');
+    odoInput.removeAttribute('min');
+    if (!truck) {
+      odoInput.placeholder = 'Select a truck first';
+      hint.innerHTML = '';
+      return;
+    }
+    if (syncing) {
+      odoInput.placeholder = 'Checking sheet…';
+      hint.innerHTML = pill('#f5f7ff', '#c5d0e8', '#4a5568', '⏳ Checking the sheet for this truck…');
+      return;
+    }
+    const last = getLast(truck);
+    if (!last) {
+      odoInput.placeholder = 'Enter current odometer';
+      if (ODO.source === 'none') {
+        hint.innerHTML = pill('#fff5f5', '#f5c6c6', '#c0392b', '⚠️ Could not reach the sheet — last reading unknown');
+      } else {
+        hint.innerHTML = pill('#f0fff4', '#b2dfdb', '#2e7d52', '🆕 First entry on the sheet for this truck');
+      }
+      return;
+    }
+    odoInput.placeholder = last.odometer.toLocaleString() + ' mi';
+    // Deliberately no `min` — nothing hard-blocks a driver at the pump.
+    // Odd readings are warned about here and flagged in the sheet.
+    const who = last.driver ? ' by ' + last.driver : '';
+    const when = last.date ? ' on ' + last.date : '';
+    if (ODO.source === 'server') {
+      hint.innerHTML = pill('#f0f4ff', '#c5d0e8', '#4a5568',
+        '📍 Last fleet reading: <b>' + last.odometer.toLocaleString() + ' mi</b>' + who + when);
+    } else {
+      hint.innerHTML = pill('#fffaf0', '#f0d9a0', '#8a6d1f',
+        '📍 Cached reading: <b>' + last.odometer.toLocaleString() + ' mi</b>' + who + when + ' — not verified against the sheet');
+    }
+  }
+
+  function validateOdometer(val) {
+    const truck = document.getElementById('truckNum').value;
+    const hint = document.getElementById('odoHint');
+    const odoEl = document.getElementById('odometer');
+    const last = getLast(truck);
+    if (!val || !last) return;
+    const entered = parseInt(val, 10);
+    if (isNaN(entered)) return;
+    if (entered < last.odometer) {
+      hint.innerHTML = pill('#fff0f0', '#f5c6c6', '#e74c3c',
+        '⚠️ Below last fleet reading of ' + last.odometer.toLocaleString() + ' mi');
+      odoEl.style.color = 'var(--red-light)';
+      return;
+    }
+    const diff = entered - last.odometer;
+    odoEl.style.color = 'var(--text)';
+    if (diff > BIG_JUMP) {
+      hint.innerHTML = pill('#fffaf0', '#f0d9a0', '#8a6d1f',
+        '❓ +' + diff.toLocaleString() + ' mi since last fill-up — double-check that reading');
+    } else {
+      hint.innerHTML = pill('#f0fff4', '#b2dfdb', '#27ae60',
+        '✅ +' + diff.toLocaleString() + ' mi since last fill-up');
+    }
+  }
+
+  // ── TIMESTAMPS ────────────────────────────────────────────
   function setTimestamp() {
     const n = new Date();
     document.getElementById('fuelDate').value =
@@ -567,13 +766,12 @@
       '  ' + n.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
   }
   setTimestamp();
-  setInterval(setTimestamp, 60000); // updates every minute until submit
+  setInterval(setTimestamp, 60000);
 
-  // Live timestamp
   function updateTS() {
     const n = new Date();
     const el = document.getElementById('tsbadge');
-    if(el) el.textContent =
+    if (el) el.textContent =
       n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) +
       '  ·  ' + n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   }
@@ -583,105 +781,45 @@
     document.getElementById('galBar').style.width = Math.min((parseFloat(v)||0)/200*100,100)+'%';
   }
 
-  function toggleOutside() {
-    const isOutside = document.getElementById('fuelSource').value === 'Outside Pump';
-    const newVal = isOutside ? 'Yard Tank' : 'Outside Pump';
-    document.getElementById('fuelSource').value = newVal;
-    const box = document.getElementById('toggleBox');
-    const dot = document.getElementById('toggleDot');
-    const label = document.getElementById('sourceLabel');
-    if (newVal === 'Outside Pump') {
-      box.style.background = 'var(--red)';
-      dot.style.left = '20px';
-      label.textContent = 'Fueling from outside pump / station';
-      label.style.color = 'var(--red-light)';
-    } else {
-      box.style.background = 'var(--border)';
-      dot.style.left = '2px';
-      label.textContent = 'Fueling from yard bulk tank';
-      label.style.color = 'var(--text-muted)';
-    }
-  }
-
-  // ── ODOMETER MEMORY ──────────────────────────────────────
-  const ODO_KEY_PREFIX = 'jcv38_odo_';
-
-  function getLastOdo(truck) {
-    const val = localStorage.getItem(ODO_KEY_PREFIX + truck);
-    return val ? parseInt(val) : null;
-  }
-
-  function setLastOdo(truck, miles) {
-    localStorage.setItem(ODO_KEY_PREFIX + truck, miles);
-  }
-
-  function loadOdometerForTruck() {
-    const truck = document.getElementById('truckNum').value;
-    const odoInput = document.getElementById('odometer');
-    const hint = document.getElementById('odoHint');
-    if (!truck) {
-      odoInput.placeholder = 'Select a truck first';
-      hint.textContent = '';
-      return;
-    }
-    const last = getLastOdo(truck);
-    if (last !== null) {
-      odoInput.placeholder = last.toLocaleString() + ' mi';
-      odoInput.min = last;
-      hint.innerHTML = '<span style="background:#f0f4ff;border:1px solid #c5d0e8;border-radius:6px;padding:3px 9px;font-size:0.68rem;font-weight:600;color:#4a5568;letter-spacing:0.04em;">📍 Last reading: ' + last.toLocaleString() + ' mi — must be equal or higher</span>';
-    } else {
-      odoInput.placeholder = 'Enter current odometer';
-      odoInput.removeAttribute('min');
-      hint.innerHTML = '<span style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:3px 9px;font-size:0.68rem;font-weight:600;color:#2e7d52;letter-spacing:0.04em;">🆕 First entry for this truck</span>';
-    }
-  }
-
-  function validateOdometer(val) {
-    const truck = document.getElementById('truckNum').value;
-    const hint = document.getElementById('odoHint');
-    const last = getLastOdo(truck);
-    if (!val || !last) return;
-    const entered = parseInt(val);
-    if (entered < last) {
-      hint.innerHTML = '<span style="background:#fff0f0;border:1px solid #f5c6c6;border-radius:6px;padding:3px 9px;font-size:0.68rem;font-weight:600;color:var(--red-light);letter-spacing:0.04em;">⚠️ Must be ≥ last reading of ' + last.toLocaleString() + ' mi</span>';
-      document.getElementById('odometer').style.color = 'var(--red-light)';
-    } else {
-      const diff = (entered - last).toLocaleString();
-      hint.innerHTML = '<span style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:3px 9px;font-size:0.68rem;font-weight:600;color:var(--success);letter-spacing:0.04em;">✅ +' + diff + ' mi since last fill-up</span>';
-      document.getElementById('odometer').style.color = 'var(--text)';
-    }
-  }
-
   // ── SUBMIT FLOW ───────────────────────────────────────────
-  // Tap Submit → validate → open confirm modal → tap Confirm → fetch → clear form
-  // Button stays disabled from first tap until form is fully cleared.
-
   function submitForm() {
-    // Gather and validate BEFORE showing the modal so we don't waste the driver's time
     const d = gatherFormData();
-
     if (!d.driverName || !d.truckNum || !d.odometer || !d.gallons) {
       showErr('Please fill in all required fields.');
       return;
     }
-    const lastOdo = getLastOdo(d.truckNum);
-    if (lastOdo && parseInt(d.odometer) < lastOdo) {
-      showErr('Odometer reading must be ≥ last recorded reading of ' + lastOdo.toLocaleString() + ' mi for ' + d.truckNum + '.');
+    if (parseFloat(d.gallons) <= 0) {
+      showErr('Gallons must be greater than 0.');
       return;
     }
+    const last = getLast(d.truckNum);
+    const entered = parseInt(d.odometer, 10);
 
-    // Hide any prior error
     document.getElementById('errorMsg').style.display = 'none';
 
-    // Build summary inside modal
-    const milesSince = lastOdo ? (parseInt(d.odometer) - lastOdo) : null;
+    // NOTHING blocks a submission. A driver at the pump can always record fuel.
+    // Anything suspect is shown here and flagged in column Q of the sheet.
+    let warn = '', danger = false;
+    if (last && entered < last.odometer) {
+      warn = '⚠️ This is ' + (last.odometer - entered).toLocaleString() + ' mi BELOW the last reading of ' +
+             last.odometer.toLocaleString() + ' mi' + (last.driver ? ' logged by ' + last.driver : '') +
+             '. Check the dash. If your number is right, submit anyway — the office will review it.';
+      danger = true;
+    } else if (ODO.source !== 'server') {
+      warn = '⚠️ Could not verify against the sheet right now. This entry will still be recorded and flagged for review.';
+    } else if (last && (entered - last.odometer) > BIG_JUMP) {
+      warn = '❓ That is +' + (entered - last.odometer).toLocaleString() + ' mi since the last fill-up. Make sure the odometer is right.';
+    }
+    document.getElementById('confirmWarn').innerHTML = warn ? '<div class="modal-warn' + (danger ? ' danger' : '') + '">' + escapeHtml(warn) + '</div>' : '';
+
     let html =
       '<div class="summary-row"><div class="key">Driver</div><div class="val">' + escapeHtml(d.driverName) + '</div></div>' +
       '<div class="summary-row"><div class="key">Truck #</div><div class="val big">' + escapeHtml(d.truckNum) + '</div></div>' +
       '<div class="summary-row"><div class="key">Date</div><div class="val">' + escapeHtml(d.fuelDate) + '</div></div>' +
-      '<div class="summary-row"><div class="key">Odometer</div><div class="val big">' + parseInt(d.odometer).toLocaleString() + ' mi</div></div>';
-    if (milesSince !== null) {
-      html += '<div class="summary-row"><div class="key">Miles Since Last</div><div class="val">+' + milesSince.toLocaleString() + ' mi</div></div>';
+      '<div class="summary-row"><div class="key">Odometer</div><div class="val big">' + entered.toLocaleString() + ' mi</div></div>';
+    if (last) {
+      html += '<div class="summary-row"><div class="key">Last Fleet Reading</div><div class="val">' + last.odometer.toLocaleString() + ' mi' + (last.driver ? ' · ' + escapeHtml(last.driver) : '') + '</div></div>';
+      html += '<div class="summary-row"><div class="key">Miles Since Last</div><div class="val">' + (entered - last.odometer >= 0 ? '+' : '') + (entered - last.odometer).toLocaleString() + ' mi</div></div>';
     }
     html += '<div class="summary-row"><div class="key">Gallons</div><div class="val big">' + escapeHtml(d.gallons) + '</div></div>';
     if (d.repairNotes) {
@@ -689,17 +827,18 @@
     }
     document.getElementById('confirmSummary').innerHTML = html;
 
-    // Stash the validated data on the modal so we don't re-read possibly-changed fields on confirm
-    document.getElementById('confirmModal')._pendingData = d;
+    const btnConfirm = document.getElementById('btnConfirm');
+    btnConfirm.innerHTML = danger
+      ? '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Submit Anyway'
+      : '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Confirm &amp; Submit';
 
-    // Show modal and lock the underlying Submit button immediately
+    document.getElementById('confirmModal')._pendingData = d;
     document.getElementById('submitBtn').disabled = true;
     document.getElementById('confirmModal').classList.add('visible');
   }
 
   function closeConfirm() {
     document.getElementById('confirmModal').classList.remove('visible');
-    // Re-enable submit so driver can adjust and try again
     document.getElementById('submitBtn').disabled = false;
   }
 
@@ -707,44 +846,42 @@
     const modal = document.getElementById('confirmModal');
     const d = modal._pendingData;
     if (!d) return;
-
     const btnConfirm = document.getElementById('btnConfirm');
     btnConfirm.disabled = true;
     btnConfirm.innerHTML = '⏳ &nbsp;Sending...';
-
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(d)
       });
 
-      // Save odometer for this truck
-      const truck = d.truckNum;
-      const miles = parseInt(d.odometer);
-      if (truck && miles) setLastOdo(truck, miles);
+      // Optimistically advance the local picture so a second fill-up in the
+      // same session validates correctly, then re-pull the truth from the sheet.
+      const k = normTruck(d.truckNum);
+      const miles = parseInt(d.odometer, 10);
+      if (k && miles) {
+        ODO.map[k] = { odometer: miles, date: d.fuelDate, driver: d.driverName };
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify(ODO)); } catch(e) {}
+      }
 
-      // Close modal and clear form. Submit button gets re-enabled by resetForm.
       modal.classList.remove('visible');
       modal._pendingData = null;
       resetForm();
-
       document.getElementById('successMsg').style.display = 'flex';
       document.getElementById('errorMsg').style.display = 'none';
+      setTimeout(function(){ syncOdometers(false); }, 2500);
     } catch(err) {
-      console.log('fetch error:', err.message);
-      // Keep modal open on error so driver can retry without re-typing
       btnConfirm.disabled = false;
       btnConfirm.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Retry Submission';
       showErr('Network error. Check connection and tap Retry.');
-    } finally {
-      // Reset confirm button label for next time
-      setTimeout(() => {
-        btnConfirm.disabled = false;
-        btnConfirm.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Confirm & Submit';
-      }, 500);
+      return;
     }
+    setTimeout(function() {
+      btnConfirm.disabled = false;
+      btnConfirm.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Confirm & Submit';
+    }, 500);
   }
 
   function gatherFormData() {
@@ -756,39 +893,52 @@
       gallons:     document.getElementById('gallons').value.trim(),
       repairNotes: document.getElementById('repairNotes').value.trim(),
       fuelSource:  document.getElementById('fuelSource').value,
-      timestamp:   new Date().toISOString()
+      // Local wall-clock time, not UTC — the sheet should show when the driver
+      // actually fuelled, not what that instant was in London.
+      localTime:   new Date().toLocaleString('en-US', {hour12:false}),
+      tzOffsetMin: new Date().getTimezoneOffset()
     };
   }
 
   function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, c => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[c]));
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
   }
 
   function resetForm() {
     document.getElementById('fuelSource').value = 'Yard Tank';
-    document.getElementById('odoHint').textContent = '';
+    document.getElementById('odoHint').innerHTML = '';
     document.getElementById('odometer').style.color = 'var(--text)';
     document.getElementById('odometer').placeholder = 'Select a truck first';
-    ['driverName','truckNum','odometer','gallons','repairNotes'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el.tagName==='SELECT') el.selectedIndex=0; else el.value='';
+    document.getElementById('odometer').removeAttribute('min');
+    ['driverName','truckNum','odometer','gallons','repairNotes'].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
     });
-    document.getElementById('galBar').style.width='0%';
-
-    // Re-enable submit button so the next entry can be started
+    document.getElementById('galBar').style.width = '0%';
     const btn = document.getElementById('submitBtn');
     btn.disabled = false;
     btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit Fuel Log';
-
-    setTimeout(()=>document.getElementById('successMsg').style.display='none', 6000);
+    setTimeout(function(){ document.getElementById('successMsg').style.display = 'none'; }, 6000);
   }
 
   function showErr(msg) {
     document.getElementById('errTxt').textContent = msg;
     document.getElementById('errorMsg').style.display = 'flex';
   }
+
+  // ── STARTUP + KEEP-FRESH ──────────────────────────────────
+  (function boot() {
+    const c = readCache();
+    if (c) ODO = { map: c.map, source: 'cache', at: c.at || 0 };
+    syncOdometers(false);
+  })();
+
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && Date.now() - ODO.at > STALE_MS) syncOdometers(false);
+  });
+  window.addEventListener('online', function(){ syncOdometers(false); });
 </script>
 </body>
 </html>
